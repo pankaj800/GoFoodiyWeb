@@ -1,0 +1,39 @@
+# GoFoodiyWeb
+This is the code base repository  for GoFoodiy aplication
+@RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)
+@ResponseBody
+public ResponseEntity<Resource> getFile(
+@RequestHeader(name = SecurityConstants.ACCESSTOKEN, required = false) String token,
+@PathVariable String filename) {
+Resource file = storageService.loadFile(filename);
+return ResponseEntity.ok()
+.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+.body(file);
+}
+
+
+public Resource loadFile(String filename) {
+try {
+Path file = rootLocation.resolve(filename);
+Resource resource = new UrlResource(file.toUri());
+if (resource.exists() || resource.isReadable()) {
+return resource;
+} else {
+throw new GenericException("FAILED TO LOAD IMAGES.");
+}
+} catch (MalformedURLException e) {
+throw new GenericException("FAILED TO LOAD IMAGES.");
+}
+}
+
+
+
+private final Path rootLocation = Paths.get("images");
+
+
+@Bean(name = "multipartResolver")
+public CommonsMultipartResolver multipartResolver() {
+return new CommonsMultipartResolver();
+}
+
+Thanks.
