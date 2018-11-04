@@ -34,7 +34,7 @@
 			<div class="box-header">
 				<h2>Log In</h2>
 			</div>
-			<label for="username">Username</label>
+			<label for="username">Usernamee</label>
 			<br/>
 			<input type="text" id="username" name="username">
 			<br/>
